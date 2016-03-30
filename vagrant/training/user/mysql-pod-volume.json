@@ -1,0 +1,53 @@
+{
+  "kind": "Pod",
+  "apiVersion": "v1beta3",
+  "metadata": {
+    "name": "mysql-server",
+    "labels": {
+      "name": "mysql-server"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "mysql-server",
+        "image": "openshift3/mysql-55-rhel7",
+        "imagePullPolicy": "IfNotPresent",
+        "ports": [{
+            "containerPort": 3306
+        }],
+        "env": [
+          {
+             "name": "MYSQL_USER",
+             "value": "mysql"
+          },
+          {
+             "name": "MYSQL_PASSWORD",
+             "value": "mysql"
+          },
+          {
+             "name": "MYSQL_DATABASE",
+             "value": "sample"
+          },
+          {
+             "name": "MYSQL_ROOT_PASSWORD",
+             "value": "supersecret"
+          }
+        ],
+        "resources": {
+          "limits": {
+            
+            "cpu": "1",
+            "memory": "500Mi"
+          }
+        },
+        "volumeMounts": [
+          { "name": "data", "mountPath": "/var/lib/mysql/data" }
+        ]
+      }
+    ],
+    "volumes": [
+      { "name": "data", "nfs": {"server": "10.32.244.100","path": "/exports/data1"}}
+    ]
+  }
+}
